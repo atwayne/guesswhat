@@ -9,7 +9,7 @@ guessApp.controller('MainCtrl', function ($scope, $interval) {
 
     $scope.current = null;
 
-    $scope.pending = ['word1', 'word2'];
+    $scope.pending = ['Global Securitized Market', 'Apple', 'Star wars', 'Fox', 'Friends'];
 
     $scope.skipped = [];
 

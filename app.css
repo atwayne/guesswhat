@@ -5,6 +5,7 @@ html, body, body .page {
 
 body {
     position: relative;
+    width:90%;
 }
 
 .overlay {
@@ -83,4 +84,26 @@ div.score {
 
 .overlay .center-block .row {
     margin: 3em;
+}
+
+
+#main-container,#foot-container {
+    text-align: center;
+}
+
+    #main-container h1.word {
+        padding: 10%;
+        font-size: 7em;
+    }
+
+
+#foot-container p.tag {
+    color: white;
+    font-size: 2em;
+}
+
+#foot-container .box {
+    font-size: 3em;
+    color: white;
+    text-align: center;
 }
