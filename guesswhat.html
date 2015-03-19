@@ -14,31 +14,42 @@
     <div class="overlay" ng-show="ShowOverlay">
         <div class="center-block text-center">
             <h2>Get ready and </h2>
-            <button ng-click="Start()" ng-hide="IsRunning()" class="btn btn-default  btn-lg">GO!!</button>
+            <button ng-click="Start()" ng-hide="IsRunning()" class="btn btn-default btn-block btn-lg">GO!!</button>
         </div>
     </div>
-    <div>
-
-
-        <div>
-            <div class="center-block row">
-                <div class="col-md-4">{{GetHours()}} </div>
-                <div class="col-md-4">{{GetMinutes()}} </div>
-                <div class="col-md-4">{{GetSeconds()}}</div>
+    <div class="page" ng-hide="ShowOverlay">
+        <div class="center-block row" id="clock-container">
+            <div class="col-md-4 time-digits">
+                <span>{{GetHours() | limitTo:1}}</span>
+                <span>{{GetHours() | limitTo:-1}}</span>
+            </div>
+            <div class="col-md-4 time-digits">
+                <span>{{GetMinutes()| limitTo:1}} </span>
+                <span>{{GetMinutes()| limitTo:-1}} </span>
+            </div>
+            <div class="col-md-4 time-digits">
+                <span>{{GetSeconds()| limitTo:1}}</span>
+                <span>{{GetSeconds()| limitTo:-1}} </span>
             </div>
         </div>
+        <div class="center-block row" id="main-container">
+            <div>
+                <span ng-show="current!=null">{{current}}</span>
+                <span ng-show="current==null">All done!</span>
 
-        <div>
-            <span ng-show="current!=null">{{current}}</span>
-            <span ng-show="current==null">All done!</span>
+                <button ng-click="MoveNext()" type="button" class="btn btn-success btn-lg">Move Next</button>
+                <button ng-click="Skip()" type="button" class="btn btn-warning btn-lg">Skip</button>
 
-            <button ng-click="MoveNext()" type="button" class="btn btn-success btn-lg">Move Next</button>
-            <button ng-click="Skip()" type="button" class="btn btn-warning btn-lg">Skip</button>
-
+            </div>
         </div>
-        <span>Completed: {{GetCompletedCount()}}</span>
-        <span>Pending: {{GetPendingCount()}}</span>
-        <span>Skipped: {{GetSkippedCount()}}</span>
+        <div class="center-block row" id="foot-container">
+            <span>Completed: {{GetCompletedCount()}}</span>
+            <span>Pending: {{GetPendingCount()}}</span>
+            <span>Skipped: {{GetSkippedCount()}}</span>
+        </div>
     </div>
+
+
+
 </body>
 </html>
