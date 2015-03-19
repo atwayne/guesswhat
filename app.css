@@ -5,8 +5,11 @@ html, body, body .page {
 
 body {
     position: relative;
-    width:90%;
 }
+
+    body div.page {
+        width: 95%;
+    }
 
 .overlay {
     position: absolute;
@@ -29,7 +32,6 @@ body {
 
 
 #clock-container {
-    height: 20%;
     background-color: grey;
     padding: 0 35%;
     border: solid 2px white;
@@ -37,28 +39,22 @@ body {
 
 
 #main-container {
-    height: 70%;
+    min-height: 70%;
     background-color: white;
     border: solid 2px white;
+    padding: 0 2em;
 }
 
 #foot-container {
     height: 10%;
     background-color: grey;
-    border: solid 2px white;
+    border: solid 1px white;
 }
 
 .time-digits div {
     font-size: 6em;
-    background-color: white;
     display: inline-block;
-}
-
-.time-digits.seperate::after {
-    content: ':';
-    font-size: 6em;
-    display: inline-block;
-    color: white;
+    border: solid 2px grey;
 }
 
 
@@ -87,7 +83,7 @@ div.score {
 }
 
 
-#main-container,#foot-container {
+#main-container, #foot-container {
     text-align: center;
 }
 
@@ -97,13 +93,13 @@ div.score {
     }
 
 
-#foot-container p.tag {
-    color: white;
-    font-size: 2em;
-}
+    #foot-container p.tag {
+        color: white;
+        font-size: 2em;
+    }
 
-#foot-container .box {
-    font-size: 3em;
-    color: white;
-    text-align: center;
-}
+    #foot-container .box {
+        font-size: 3em;
+        color: white;
+        text-align: center;
+    }

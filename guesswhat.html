@@ -41,15 +41,17 @@
         </div>
     </div>
 
-    <div class="page" ng-hide="ShowOverlay">
+    <div class="page center-block" ng-hide="showoverlay">
         <div class="center-block row" id="clock-container">
             <div class="col-md-4 time-digits seperate">
                 <div>{{GetHours() | limitTo:1}}</div>
                 <div>{{GetHours() | limitTo:-1}}</div>
+                <div>:</div>
             </div>
             <div class="col-md-4 time-digits seperate">
                 <div>{{GetMinutes()| limitTo:1}} </div>
                 <div>{{GetMinutes()| limitTo:-1}} </div>
+                <div>:</div>
             </div>
             <div class="col-md-4 time-digits">
                 <div>{{GetSeconds()| limitTo:1}}</div>
