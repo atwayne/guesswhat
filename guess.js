@@ -49,8 +49,9 @@ guessApp.controller('MainCtrl', function ($scope, $interval) {
     $scope.GetRandomWord();
 
     var stop;
-
+    $scope.ShowOverlay = true;
     $scope.Start = function () {
+        $scope.ShowOverlay = false;
         if (angular.isDefined(stop)) return;
         stop = $interval(function () { $scope.seconds++; }, 1000);
     };
