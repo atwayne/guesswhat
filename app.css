@@ -17,7 +17,7 @@ body {
     background-color: black;
 }
 
-    .overlay div {
+    .overlay .center-block {
         margin-top: 20%;
         width: 40%;
     }
@@ -30,19 +30,57 @@ body {
 #clock-container {
     height: 20%;
     background-color: grey;
-    padding:0 35%;
+    padding: 0 35%;
     border: solid 2px white;
 }
 
 
-#main-container{
-    height:70%;
-    background-color:white;
+#main-container {
+    height: 70%;
+    background-color: white;
     border: solid 2px white;
 }
 
-#foot-container{
-    height:10%;
-    background-color:grey;
+#foot-container {
+    height: 10%;
+    background-color: grey;
     border: solid 2px white;
+}
+
+.time-digits div {
+    font-size: 6em;
+    background-color: white;
+    display: inline-block;
+}
+
+.time-digits.seperate::after {
+    content: ':';
+    font-size: 6em;
+    display: inline-block;
+    color: white;
+}
+
+
+div.score {
+    color: white;
+}
+
+    div.score.completed {
+        background-color: green;
+    }
+
+    div.score.skipped {
+        background-color: yellow;
+    }
+
+    div.score p.score {
+        font-size: 5em;
+    }
+
+    div.score p.tag {
+        font-size: 2em;
+    }
+
+.overlay .center-block .row {
+    margin: 3em;
 }

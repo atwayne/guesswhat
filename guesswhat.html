@@ -11,29 +11,56 @@
     <script src="guess.js"></script>
 </head>
 <body ng-controller="MainCtrl">
-    <div class="overlay" ng-show="ShowOverlay">
+    <div class="overlay" ng-hide="IsRunning()">
         <div class="center-block text-center">
             <h2>Get ready and </h2>
-            <button ng-click="Start()" ng-hide="IsRunning()" class="btn btn-default btn-block btn-lg">GO!!</button>
+            <button ng-click="Start()" class="btn btn-default btn-block btn-lg">GO!!</button>
         </div>
     </div>
+
+    <div class="overlay" ng-show="IsCompleted()">
+        <div class="center-block text-center">
+            <h2>All completed with {{seconds}} seconds. Refresh to try again</h2>
+            <div class="row">
+                <div class="col-xs-4 score">
+                    <p class="tag">Completed</p>
+                </div>
+                <div class="col-xs-4 col-xs-offset-4 score">
+                    <p class="tag">Skipped</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 score completed">
+                    <p class="score">{{GetCompletedCount()}}</p>
+                </div>
+                <div class="col-xs-4 col-xs-offset-4 score skipped">
+                    <p class="score">{{GetSkippedCount()}}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="page" ng-hide="ShowOverlay">
         <div class="center-block row" id="clock-container">
-            <div class="col-md-4 time-digits">
-                <span>{{GetHours() | limitTo:1}}</span>
-                <span>{{GetHours() | limitTo:-1}}</span>
+            <div class="col-md-4 time-digits seperate">
+                <div>{{GetHours() | limitTo:1}}</div>
+                <div>{{GetHours() | limitTo:-1}}</div>
+            </div>
+            <div class="col-md-4 time-digits seperate">
+                <div>{{GetMinutes()| limitTo:1}} </div>
+                <div>{{GetMinutes()| limitTo:-1}} </div>
             </div>
             <div class="col-md-4 time-digits">
-                <span>{{GetMinutes()| limitTo:1}} </span>
-                <span>{{GetMinutes()| limitTo:-1}} </span>
-            </div>
-            <div class="col-md-4 time-digits">
-                <span>{{GetSeconds()| limitTo:1}}</span>
-                <span>{{GetSeconds()| limitTo:-1}} </span>
+                <div>{{GetSeconds()| limitTo:1}}</div>
+                <div>{{GetSeconds()| limitTo:-1}} </div>
             </div>
         </div>
         <div class="center-block row" id="main-container">
             <div>
+                <div>
+
+                </div>
                 <span ng-show="current!=null">{{current}}</span>
                 <span ng-show="current==null">All done!</span>
 

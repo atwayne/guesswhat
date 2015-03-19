@@ -49,9 +49,7 @@ guessApp.controller('MainCtrl', function ($scope, $interval) {
     $scope.GetRandomWord();
 
     var stop;
-    $scope.ShowOverlay = true;
     $scope.Start = function () {
-        $scope.ShowOverlay = false;
         if (angular.isDefined(stop)) return;
         stop = $interval(function () { $scope.seconds++; }, 1000);
     };
@@ -65,6 +63,14 @@ guessApp.controller('MainCtrl', function ($scope, $interval) {
 
     $scope.IsRunning = function () {
         return angular.isDefined(stop);
+    };
+
+    $scope.IsCompleted = function () {
+        var result = $scope.pending.length == 0 && $scope.current == null;
+        if (result)
+            $scope.Stop();
+
+        return result;
     };
 
     $scope.GetSeconds = function () {
