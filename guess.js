@@ -1,15 +1,54 @@
 'use strict';
 
-var guessApp = angular.module('guessApp', []);
+var guessApp = angular.module('guessApp', ['ngRoute']);
 
-// create the controller and inject Angular's $scope
-guessApp.controller('MainCtrl', function ($scope, $interval) {
+guessApp.factory('WordService', function () {
+    var wordList = {
+        'Animal1': ['Dog', 'Bird', 'Human'],
+        'Planet2': ['Earth', 'Mars'],
+        'Planet3': ['Earth', 'Mars'],
+        'Planet4': ['Earth', 'Mars'],
+        'Planet5': ['Earth', 'Mars'],
+        'Planet6': ['Earth', 'Mars'],
+        'Planet7': ['Earth', 'Mars'],
+        'Planet8': ['Earth', 'Mars'],
+        'Planet9': ['Earth', 'Mars'],
+        'Planet10': ['Earth', 'Mars']
+    };
+
+    var completed = [];
+
+    var getCategories = function () {
+        return _.keys(_.omit(wordList, completed));
+    };
+
+    var getWords = function (category) {
+        completed.push(category);
+        return wordList[category];
+    };
+
+    return {
+        getCategories: getCategories,
+        getWords: getWords
+    };
+});
+
+guessApp.controller('CategoryCtrl', function ($scope, $window, WordService) {
+    $scope.categories = WordService.getCategories();
+    $scope.goto = function (category) {
+        $window.location.href = "#/word/" + category;
+    };
+});
+
+guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordService) {
+
+    var category = $routeParams.categoryName;
 
     $scope.seconds = 0;
 
     $scope.current = null;
 
-    $scope.pending = ['Global Securitized Market', 'Apple', 'Star wars', 'Fox', 'Friends'];
+    $scope.pending = WordService.getWords(category);
 
     $scope.skipped = [];
 
@@ -51,7 +90,9 @@ guessApp.controller('MainCtrl', function ($scope, $interval) {
     var stop;
     $scope.Start = function () {
         if (angular.isDefined(stop)) return;
-        stop = $interval(function () { $scope.seconds++; }, 1000);
+        stop = $interval(function () {
+            $scope.seconds++;
+        }, 1000);
     };
 
     $scope.Stop = function () {
@@ -88,3 +129,16 @@ guessApp.controller('MainCtrl', function ($scope, $interval) {
         return digit >= 10 ? digit.toString() : '0' + digit;
     };
 });
+
+guessApp.config(['$routeProvider', function ($routeProvider) {
+    $routeProvider
+        .when('/word/:categoryName', {
+            templateUrl: 'guesswhat.html',
+            controller: 'MainCtrl'
+        })
+        .when('/category', {
+            templateUrl: 'category.html',
+            controller: 'CategoryCtrl'
+        })
+        .otherwise({redirectTo: '/category'});
+}]);

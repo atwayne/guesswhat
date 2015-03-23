@@ -7,9 +7,9 @@ body {
     position: relative;
 }
 
-    body div.page {
-        width: 95%;
-    }
+body div.page {
+    width: 95%;
+}
 
 .overlay {
     position: absolute;
@@ -21,22 +21,20 @@ body {
     background-color: black;
 }
 
-    .overlay .center-block {
-        margin-top: 20%;
-        width: 40%;
-    }
+.overlay .center-block {
+    margin-top: 20%;
+    width: 40%;
+}
 
-    .overlay h2 {
-        color: white;
-    }
-
+.overlay h2 {
+    color: white;
+}
 
 #clock-container {
     background-color: grey;
     padding: 0 35%;
     border: solid 2px white;
 }
-
 
 #main-container {
     min-height: 70%;
@@ -57,49 +55,57 @@ body {
     border: solid 2px grey;
 }
 
-
 div.score {
     color: white;
 }
 
-    div.score.completed {
-        background-color: green;
-    }
+div.score.completed {
+    background-color: green;
+}
 
-    div.score.skipped {
-        background-color: yellow;
-    }
+div.score.skipped {
+    background-color: yellow;
+}
 
-    div.score p.score {
-        font-size: 5em;
-    }
+div.score p.score {
+    font-size: 5em;
+}
 
-    div.score p.tag {
-        font-size: 2em;
-    }
+div.score p.tag {
+    font-size: 2em;
+}
 
 .overlay .center-block .row {
     margin: 3em;
 }
 
-
 #main-container, #foot-container {
     text-align: center;
 }
 
-    #main-container h1.word {
-        padding: 10%;
-        font-size: 7em;
-    }
+#main-container h1.word {
+    padding: 10%;
+    font-size: 7em;
+}
 
+#foot-container p.tag {
+    color: white;
+    font-size: 2em;
+}
 
-    #foot-container p.tag {
-        color: white;
-        font-size: 2em;
-    }
+#foot-container .box {
+    font-size: 3em;
+    color: white;
+    text-align: center;
+}
 
-    #foot-container .box {
-        font-size: 3em;
-        color: white;
-        text-align: center;
-    }
+.categoryContainer {
+    background-color: green;
+    min-height: 5em;
+    max-width: 10em;
+    min-width: 10em;
+    margin: 1em;
+    color:white;
+    font-size:2em;
+    text-align: center;
+}
