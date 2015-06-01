@@ -1,15 +1,14 @@
 html, body, body .page {
     height: 100%;
-    min-height: 100%;
 }
 
 body {
     position: relative;
 }
 
-body div.page {
-    width: 95%;
-}
+    body div.page {
+        width: 95%;
+    }
 
 .overlay {
     position: absolute;
@@ -17,95 +16,202 @@ body div.page {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: 2048;
     background-color: black;
 }
 
-.overlay .center-block {
-    margin-top: 20%;
-    width: 40%;
-}
+    .overlay .center-block {
+        margin-top: 20%;
+        width: 40%;
+    }
 
-.overlay h2 {
-    color: white;
-}
+    .overlay h2 {
+        color: white;
+    }
 
 #clock-container {
-    background-color: grey;
-    padding: 0 35%;
-    border: solid 2px white;
+    color: white;
+    max-width: 60em;
+    min-width: 60em;
+    height: 15%;
+    vertical-align: middle;
 }
 
 #main-container {
-    min-height: 70%;
+    height: 70%;
     background-color: white;
     border: solid 2px white;
     padding: 0 2em;
 }
 
-#foot-container {
-    height: 10%;
-    background-color: grey;
-    border: solid 1px white;
-}
-
-.time-digits div {
+.time-digits {
     font-size: 6em;
     display: inline-block;
-    border: solid 2px grey;
+    text-align: center;
+    font-family: broadway;
+    font-size: 8em;
 }
 
 div.score {
     color: white;
 }
 
-div.score.completed {
-    background-color: green;
-}
+    div.score.completed {
+        background-color: green;
+        color: white;
+    }
 
-div.score.skipped {
-    background-color: yellow;
-}
+    div.score.skipped {
+        background-color: yellow;
+        color: gray;
+    }
 
-div.score p.score {
-    font-size: 5em;
-}
+    div.score p.score {
+        font-size: 5em;
+    }
 
-div.score p.tag {
-    font-size: 2em;
-}
+    div.score p.tag {
+        font-size: 2em;
+    }
 
 .overlay .center-block .row {
     margin: 3em;
 }
 
-#main-container, #foot-container {
+.word-container {
     text-align: center;
+    border: 1px solid;
+    min-height: 20em;
+    margin-bottom: 2em;
 }
 
-#main-container h1.word {
-    padding: 10%;
-    font-size: 7em;
-}
-
-#foot-container p.tag {
-    color: white;
-    font-size: 2em;
-}
-
-#foot-container .box {
-    font-size: 3em;
-    color: white;
-    text-align: center;
+.button-group {
+    text-align: right;
 }
 
 .categoryContainer {
-    background-color: green;
-    min-height: 5em;
-    max-width: 10em;
-    min-width: 10em;
+    height: 5em;
+    width: 10em;
     margin: 1em;
-    color:white;
-    font-size:2em;
+    font-size: 2em;
+    font-family: Andalus;
     text-align: center;
+    border: 1px solid;
+    vertical-align: middle;
+    line-height: 5em;
+    cursor: pointer;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
 }
+
+.btn.next, .btn.skip {
+    font-size: 2em;
+    margin: 1em;
+    padding: 1em;
+}
+
+.btn.next {
+    background-color: green;
+    color: white;
+}
+
+div.view {
+    width: 100%;
+    height: 100%;
+    min-height: 750px;
+}
+
+div.header, div.footer {
+    background: black;
+    color: black;
+}
+
+div.header {
+    height: 12em;
+    color: white;
+    text-align: center;
+    box-shadow: 57px 46px 109px -63px rgba(0,0,0,0.75);
+}
+
+    div.header span.title {
+        font-family: broadway;
+        font-size: 8em;
+    }
+
+    div.header .glyphicon, div.button-group .glyphicon {
+        font-size: 7em;
+        cursor: pointer;
+    }
+
+div.button-group .glyphicon {
+    margin: 12px;
+}
+
+body {
+    padding: 12em 0;
+}
+
+div.body-content, div.body-content .jumbotron {
+    background-color: white;
+    padding-bottom: 12em;
+}
+
+
+div.go-container {
+    border-radius: 51px 51px 51px 51px;
+    border: 1px solid white;
+    color: white;
+    cursor: pointer;
+}
+
+    div.go-container p {
+        font-family: broadway;
+        font-size: 8em;
+    }
+
+
+.word-container p.word {
+    font-size: 9em;
+    line-height: 3em;
+}
+
+
+.guess-page .footer {
+    color: white;
+    text-align: right;
+    font-size: 2em;
+    font-family: broadway;
+    padding-right: 2em;
+}
+
+
+.stat-container div {
+    text-align: center;
+    border: solid 1px;
+    margin: 1em;
+}
+
+.stat-container .key, .stat-container .unit {
+    font-family: Andalus;
+}
+
+.stat-container .value {
+    font-family: Broadway;
+    font-size: 5em;
+}
+
+
+.final-score-container div {
+    text-align: center;
+    border: solid 1px;
+    margin: 1em;
+}
+
+    .final-score-container div .title {
+        font-family: Andalus;
+        font-size: 4em;
+    }
+
+    .final-score-container div .score {
+        font-family: Broadway;
+        font-size: 9em;
+    }

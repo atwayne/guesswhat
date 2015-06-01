@@ -13,107 +13,115 @@
     <script src="guess.js"></script>
 </head>
 <body class="center-block">
-<div ng-view></div>
-<script type="text/ng-template" id="category.html">
-    <div class="container-fluid">
-        <div class="row">
-            <div ng-repeat="category in categories" class="col-md-1 categoryContainer" ng-click="goto(category)">
-                {{category}}
+    <div ng-view class="view center-block"></div>
+    <script type="text/ng-template" id="category.html">
+        <div class="center-block category-page">
+            <div class="center-block header navbar navbar-inverse navbar-fixed-top">
+                <span class="glyphicon glyphicon-triangle-left" aria-hidden="true" ng-click="PreviousMode()"></span>
+                <span ng-repeat="mode in modes" class="title" ng-show="mode == currentMode">
+                    {{mode}}
+                </span>
+                <span class="glyphicon glyphicon-triangle-right" aria-hidden="true" ng-click="NextMode()"></span>
+            </div>
+            <div class="center-block content container-fluid body-content">
+                <div class="jumbotron">
+                    <div ng-repeat="category in categories" class="col-md-1 categoryContainer" ng-click="goto(category)">
+                        {{category}}
+                    </div>
+
+                    <h2 ng-show="categories.length==0">
+                        No category left. Refresh page to try again.
+                    </h2>
+                </div>
+
+            </div>
+
+            <div class="center-block footer navbar-fixed-bottom">
+                <h5>Build by lastr2d2. Wayne Wang</h5>
             </div>
         </div>
-        <h2 ng-show="categories.length==0">
-            No category left. Refresh page to try again.
-        </h2>
-    </div>
-</script>
-<script type="text/ng-template" id="guesswhat.html">
-    <div class="overlay" ng-hide="IsRunning()">
-        <div class="center-block text-center">
-            <h2>Get ready and </h2>
-            <button ng-click="Start()" class="btn btn-default btn-block btn-lg">GO!!</button>
-        </div>
-    </div>
-
-    <div class="overlay" ng-show="IsCompleted()">
-        <div class="center-block text-center">
-            <h2>All completed with {{seconds}} seconds.</h2>
-
-            <div class="row">
-                <div class="col-xs-4 score">
-                    <p class="tag">Completed</p>
-                </div>
-                <div class="col-xs-4 col-xs-offset-4 score">
-                    <p class="tag">Skipped</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4 score completed">
-                    <p class="score">{{GetCompletedCount()}}</p>
-                </div>
-                <div class="col-xs-4 col-xs-offset-4 score skipped">
-                    <p class="score">{{GetSkippedCount()}}</p>
-                </div>
-            </div>
-
-            <h4><a ng-href="#/category">Try another category</a></h4>
-
-        </div>
-    </div>
-
-    <div class="page center-block" ng-hide="showoverlay">
-        <div class="center-block row" id="clock-container">
-            <div class="col-md-4 time-digits seperate">
-                <div>{{GetHours() | limitTo:1}}</div>
-                <div>{{GetHours() | limitTo:-1}}</div>
-                <div>:</div>
-            </div>
-            <div class="col-md-4 time-digits seperate">
-                <div>{{GetMinutes()| limitTo:1}}</div>
-                <div>{{GetMinutes()| limitTo:-1}}</div>
-                <div>:</div>
-            </div>
-            <div class="col-md-4 time-digits">
-                <div>{{GetSeconds()| limitTo:1}}</div>
-                <div>{{GetSeconds()| limitTo:-1}}</div>
+    </script>
+    <script type="text/ng-template" id="guesswhat.html">
+        <div class="overlay" ng-hide="IsRunning() || IsCompleted()">
+            <div class="center-block text-center go-container" ng-click="Start()">
+                <p>Go!</p>
             </div>
         </div>
-        <div class="center-block row" id="main-container">
-            <div>
-
-                <h1 class="word">{{current}}</h1>
-
-
-                <button ng-click="MoveNext()" type="button" class="btn btn-default btn-lg">Next</button>
-                <button ng-click="Skip()" type="button" class="btn btn-default btn-lg">Skip</button>
-
-            </div>
-        </div>
-        <div class="center-block row" id="foot-container">
-            <div class="row">
-                <div class="col-xs-offset-6 col-xs-2">
-                    <p class="tag">Completed</p>
+        <div class="center-block guess-page">
+            <div class="center-block header navbar navbar-inverse navbar-fixed-top">
+                <div class="center-block row" id="clock-container" ng-hide="IsCompleted()">
+                    <div class="col-md-2 col-md-offset-2 time-digits">{{GetHours()}} </div>
+                    <div class="col-md-1 time-digits">:</div>
+                    <div class="col-md-2 time-digits">{{GetMinutes()}}</div>
+                    <div class="col-md-1 time-digits">:</div>
+                    <div class="col-md-2 time-digits">{{GetSeconds()}}</div>
                 </div>
-                <div class="col-xs-2">
-                    <p class="tag">Remaing</p>
-                </div>
-                <div class="col-xs-2">
-                    <p class="tag">Skipped</p>
+                <div class="row" ng-show="IsCompleted()">
+                    <span class="title">
+                        {{currentMode}}
+                    </span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-offset-6 col-xs-2 box">
-                    <p class="score">{{GetCompletedCount()}}</p>
+            <div class="center-block content container-fluid body-content">
+                <div class="jumbotron center-block" ng-hide="IsCompleted()">
+                    <div class="word-container center-block">
+                        <p class="word">{{current}}</p>
+                    </div>
+                    <div class="button-group">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="MoveNext()"></span>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="Skip()"></span>
+                    </div>
                 </div>
-                <div class="col-xs-2 box">
-                    <p class="score">{{GetPendingCount()}}</p>
+
+                <div class="jumbotron center-block" ng-show="IsCompleted()">
+                    <div class="center-block">
+                        <div class="row">
+                            <div class="col-md-4 stat-container">
+                                <div>
+                                    <p class="key">Completion Time</p>
+                                    <p class="value">{{seconds}}</p>
+                                    <p class="unit">Seconds</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 stat-container">
+                                <div>
+                                    <p class="key">Successful Guess</p>
+                                    <p class="value">{{GetCompletedCount()}}</p>
+                                    <p class="unit">Words</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 stat-container">
+
+                                <div>
+                                    <p class="key">Skipped Guess</p>
+                                    <p class="value">{{GetSkippedCount()}}</p>
+                                    <p class="unit">Words</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="final-score-container col-md-12">
+                                <div>
+                                    <p class="title">Your Final Score</p>
+                                    <p class="score">{{GetScore()}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-2 box">
-                    <p class="score">{{GetSkippedCount()}}</p>
+            </div>
+
+            <div class="center-block footer navbar-fixed-bottom">
+                <div ng-hide="IsCompleted()">
+                    <p>Completed: {{GetCompletedCount()}}</p>
+                    <p>Remaining: {{GetPendingCount()}}</p>
+                    <p>Skipped: {{GetSkippedCount()}}</p>
+                </div>
+                <div ng-show="IsCompleted()">
+                    <a href="#/category">Try another category</a>
                 </div>
             </div>
         </div>
-    </div>
-
-</script>
+    </script>
 </body>
 </html>

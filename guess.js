@@ -2,6 +2,75 @@
 
 var guessApp = angular.module('guessApp', ['ngRoute']);
 
+guessApp.factory('GameService', function () {
+
+    var modes = [
+        {
+            Name: 'Normal Mode',
+            Score: function (successful, skipped, remaining, seconds) {
+                //int((1680 - [time_spent_in_seconds] - [pending_words]*60)/1680*100)
+                var score = (1680 - seconds - (remaining + skipped) * 60) / 1680 * 100;
+                return parseInt(score);
+            }
+
+        },
+        {
+            Name: 'Arcade Mode',
+            Score: function (successful, skipped, remaining, seconds) {
+                //int([words_guessed_correctly]/20*100)
+                var score = successful / 20 * 100;
+                return parseInt(score);
+            }
+        }
+    ];
+
+    var defaultMode = 'Normal Mode';
+    var currentMode = defaultMode;
+
+    var getModeNames = function () {
+        return _.map(modes, function (item) { return item.Name; });
+    };
+
+    var getModeByName = function (name) {
+        return _.findWhere(modes, { Name: name });
+    };
+
+    var setMode = function (name) {
+        currentMode = name;
+    };
+
+    var getCurrentMode = function () {
+        return currentMode;
+    };
+
+    var getNextMode = function (name) {
+        var index = _.findIndex(modes, { Name: name });
+        var next = (index + 1) % modes.length;
+        return modes[next].Name;
+    };
+
+    var getPreviousMode = function (name) {
+        var index = _.findIndex(modes, { Name: name });
+        var previous = (index - 1 + modes.length) % modes.length;
+        return modes[previous].Name;
+    };
+
+    var getScore = function (successful, skipped, remaining, seconds) {
+        var mode = getModeByName(currentMode);
+        return mode.Score(successful, skipped, remaining, seconds);
+    };
+
+    return {
+        getModeNames: getModeNames,
+        getCurrentMode: getCurrentMode,
+        setMode: setMode,
+        getNextMode: getNextMode,
+        getPreviousMode: getPreviousMode,
+        getScore: getScore
+    };
+
+});
+
 guessApp.factory('WordService', function () {
     var wordList = {
         'Animal1': ['Dog', 'Bird', 'Human'],
@@ -33,16 +102,36 @@ guessApp.factory('WordService', function () {
     };
 });
 
-guessApp.controller('CategoryCtrl', function ($scope, $window, WordService) {
+guessApp.controller('CategoryCtrl', function ($scope, $window, WordService, GameService) {
+    $scope.modes = GameService.getModeNames();
+    $scope.currentMode = GameService.getCurrentMode();
+    $scope.setMode = function (name) {
+        GameService.setMode(name);
+        $scope.currentMode = name;
+    };
+
+    $scope.NextMode = function () {
+        var name = $scope.currentMode;
+        var nextMode = GameService.getNextMode(name);
+        $scope.setMode(nextMode);
+    };
+    $scope.PreviousMode = function () {
+        var name = $scope.currentMode;
+        var nextMode = GameService.getPreviousMode(name);
+        $scope.setMode(nextMode);
+    };
+
     $scope.categories = WordService.getCategories();
     $scope.goto = function (category) {
         $window.location.href = "#/word/" + category;
     };
 });
 
-guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordService) {
+guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordService, GameService) {
 
     var category = $routeParams.categoryName;
+
+    $scope.currentMode = GameService.getCurrentMode();
 
     $scope.seconds = 0;
 
@@ -128,6 +217,19 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
         var digit = Math.floor($scope.seconds / 3600);
         return digit >= 10 ? digit.toString() : '0' + digit;
     };
+
+    $scope.GetScore = function () {
+        // comment out this if you want live score
+        if (!$scope.IsCompleted())
+            return 'No score yet';
+
+        var remaining = $scope.GetPendingCount();
+        var skipped = $scope.GetSkippedCount();
+        var successful = $scope.GetCompletedCount();
+
+        var score = GameService.getScore(successful, skipped, remaining, $scope.seconds);
+        return score;
+    };
 });
 
 guessApp.config(['$routeProvider', function ($routeProvider) {
@@ -140,5 +242,5 @@ guessApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'category.html',
             controller: 'CategoryCtrl'
         })
-        .otherwise({redirectTo: '/category'});
+        .otherwise({ redirectTo: '/category' });
 }]);
