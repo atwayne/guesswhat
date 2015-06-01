@@ -175,7 +175,7 @@ div.go-container {
 }
 
 
-.guess-page .footer {
+.rules-page .footer, .guess-page .footer {
     color: white;
     text-align: right;
     font-size: 2em;
@@ -215,3 +215,8 @@ div.go-container {
         font-family: Broadway;
         font-size: 9em;
     }
+
+
+.rules-page .jumbotron h2, .rules-page .jumbotron p {
+    font-family: Andalus;
+}

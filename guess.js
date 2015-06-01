@@ -3,7 +3,6 @@
 var guessApp = angular.module('guessApp', ['ngRoute']);
 
 guessApp.factory('GameService', function () {
-
     var modes = [
         {
             Name: 'Normal Mode',
@@ -12,7 +11,6 @@ guessApp.factory('GameService', function () {
                 var score = (1680 - seconds - (remaining + skipped) * 60) / 1680 * 100;
                 return parseInt(score);
             }
-
         },
         {
             Name: 'Arcade Mode',
@@ -68,7 +66,6 @@ guessApp.factory('GameService', function () {
         getPreviousMode: getPreviousMode,
         getScore: getScore
     };
-
 });
 
 guessApp.factory('WordService', function () {
@@ -128,7 +125,6 @@ guessApp.controller('CategoryCtrl', function ($scope, $window, WordService, Game
 });
 
 guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordService, GameService) {
-
     var category = $routeParams.categoryName;
 
     $scope.currentMode = GameService.getCurrentMode();
@@ -242,5 +238,9 @@ guessApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'category.html',
             controller: 'CategoryCtrl'
         })
-        .otherwise({ redirectTo: '/category' });
+        .when('/rules', {
+            templateUrl: 'rules.html',
+            controller: 'RulesCtrl'
+        })
+        .otherwise({ redirectTo: '/rules' });
 }]);

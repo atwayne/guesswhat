@@ -14,6 +14,54 @@
 </head>
 <body class="center-block">
     <div ng-view class="view center-block"></div>
+    <script type="text/ng-template" id="rules.html">
+        <div class="center-block rules-page">
+            <div class="center-block header navbar navbar-inverse navbar-fixed-top">
+                <span class="title">Game Rules</span>
+            </div>
+            <div class="center-block content container-fluid body-content">
+                <div class="jumbotron">
+                    <h2>Game Rules</h2>
+                    <p>
+                        3 people makes a team. You can either have 1 describer and 2 guesser, or 2 describer and 1 guesser. Describer will get 20 words or phrases. Describer will need to describe it under a few rules, and guesser will need to guess. Only the exact match counts.
+                        When describing:
+                    </p>
+                    <ul>
+                        <li>
+                            <p>You can say how many words are there. For “red” you can say “one word”. For “green trees” you can say “two words”.</p>
+                        </li>
+                        <li>
+                            <p>You cannot directly say the word. For “green trees” you cannot say “green” or “trees”.</p>
+                        </li>
+                        <li>
+                            <p>You cannot say any other forms of the word. For “trader”, you cannot say “people who trades”.</p>
+                        </li>
+                        <li>
+                            <p>You cannot describe the word itself. For “bee” you cannot say “some word beginning with B and has 3 letters”. You cannot say “something pronounce same as the 2nd letter”.</p>
+                        </li>
+                        <li>
+                            <p>You can only describe, you cannot act or draw picture. For “credit card” you cannot pick out one from your wallet.</p>
+                        </li>
+                        <li>
+                            <p>You can give up one word at any time. However for word you gave up, you cannot describe again.</p>
+                        </li>
+                    </ul>
+
+                    <h2>Game Modes</h2>
+                    <p>Normal Mode</p>
+                    <p>There will be 20 words and 8 minutes. Each words you missed, either skipped or left when time is up, will add 60 seconds. Team with least time wins.</p>
+
+                    <p>Arcade Mode</p>
+                    <p>There will be 20 words and 4 minutes. You can skip as many as you like. Team correctly guessed most words wins.</p>
+                </div>
+            </div>
+
+            <div class="center-block footer navbar-fixed-bottom">
+                <a href="#/category">Let's start</a>
+            </div>
+        </div>
+    </script>
+
     <script type="text/ng-template" id="category.html">
         <div class="center-block category-page">
             <div class="center-block header navbar navbar-inverse navbar-fixed-top">
