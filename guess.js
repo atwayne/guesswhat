@@ -14,7 +14,7 @@ guessApp.factory('GameService', function () {
             KeepCategory: false,
             KeepWord: true,
             ExtraSecondPerSuccessGuess: 0,
-            ExtraSecondPerSkip:0
+            ExtraSecondPerSkip: 0
         },
         {
             Name: 'Arcade Mode',
@@ -89,16 +89,7 @@ guessApp.factory('GameService', function () {
 
 guessApp.factory('WordService', function () {
     var wordList = {
-        'Animal1': ['Dog', 'Bird', 'Human'],
-        'Planet2': ['Earth', 'Mars'],
-        'Planet3': ['Earth', 'Mars'],
-        'Planet4': ['Earth', 'Mars'],
-        'Planet5': ['Earth', 'Mars'],
-        'Planet6': ['Earth', 'Mars'],
-        'Planet7': ['Earth', 'Mars'],
-        'Planet8': ['Earth', 'Mars'],
-        'Planet9': ['Earth', 'Mars'],
-        'Planet10': ['Earth', 'Mars']
+        'One Piece': ['JavaScript', 'Java', 'C#', 'Powershell', 'Python', 'SQL', 'HTML', 'CSS', 'C', 'C++', 'Basic', 'LISP', 'Go']
     };
 
     var completedCategory = [];
