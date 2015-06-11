@@ -66,7 +66,7 @@
         <div class="center-block category-page">
             <div class="center-block header navbar navbar-inverse navbar-fixed-top">
                 <span class="glyphicon glyphicon-triangle-left" aria-hidden="true" ng-click="PreviousMode()"></span>
-                <span ng-repeat="mode in modes" class="title" ng-show="mode == currentMode">
+                <span ng-repeat="mode in modes" class="title" ng-show="mode == currentMode.Name">
                     {{mode}}
                 </span>
                 <span class="glyphicon glyphicon-triangle-right" aria-hidden="true" ng-click="NextMode()"></span>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="row" ng-show="IsCompleted()">
                     <span class="title">
-                        {{currentMode}}
+                        {{currentMode.Name}}
                     </span>
                 </div>
             </div>

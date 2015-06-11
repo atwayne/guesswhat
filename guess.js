@@ -7,7 +7,6 @@ guessApp.factory('GameService', function () {
         {
             Name: 'Normal Mode',
             Score: function (successful, skipped, remaining, seconds) {
-                //int((1680 - [time_spent_in_seconds] - [pending_words]*60)/1680*100)
                 var score = (1680 - seconds - (remaining + skipped) * 60) / 1680 * 100;
                 return parseInt(score);
             }
@@ -15,15 +14,19 @@ guessApp.factory('GameService', function () {
         {
             Name: 'Arcade Mode',
             Score: function (successful, skipped, remaining, seconds) {
-                //int([words_guessed_correctly]/20*100)
                 var score = successful / 20 * 100;
                 return parseInt(score);
+            }
+        },
+        {
+            Name: 'One Piece Mode',
+            Score: function (successful, skipped, remaining, seconds) {
+                return successful * 10;
             }
         }
     ];
 
     var defaultMode = 'Normal Mode';
-    var currentMode = defaultMode;
 
     var getModeNames = function () {
         return _.map(modes, function (item) { return item.Name; });
@@ -33,8 +36,10 @@ guessApp.factory('GameService', function () {
         return _.findWhere(modes, { Name: name });
     };
 
-    var setMode = function (name) {
-        currentMode = name;
+    var currentMode = getModeByName(defaultMode);
+
+    var setMode = function (mode) {
+        currentMode = mode;
     };
 
     var getCurrentMode = function () {
@@ -44,18 +49,17 @@ guessApp.factory('GameService', function () {
     var getNextMode = function (name) {
         var index = _.findIndex(modes, { Name: name });
         var next = (index + 1) % modes.length;
-        return modes[next].Name;
+        return modes[next];
     };
 
     var getPreviousMode = function (name) {
         var index = _.findIndex(modes, { Name: name });
         var previous = (index - 1 + modes.length) % modes.length;
-        return modes[previous].Name;
+        return modes[previous];
     };
 
     var getScore = function (successful, skipped, remaining, seconds) {
-        var mode = getModeByName(currentMode);
-        return mode.Score(successful, skipped, remaining, seconds);
+        return currentMode.Score(successful, skipped, remaining, seconds);
     };
 
     return {
@@ -108,13 +112,13 @@ guessApp.controller('CategoryCtrl', function ($scope, $window, WordService, Game
     };
 
     $scope.NextMode = function () {
-        var name = $scope.currentMode;
-        var nextMode = GameService.getNextMode(name);
+        var currentMode = $scope.currentMode;
+        var nextMode = GameService.getNextMode(currentMode.Name);
         $scope.setMode(nextMode);
     };
     $scope.PreviousMode = function () {
-        var name = $scope.currentMode;
-        var nextMode = GameService.getPreviousMode(name);
+        var currentMode = $scope.currentMode;
+        var nextMode = GameService.getPreviousMode(currentMode.Name);
         $scope.setMode(nextMode);
     };
 
