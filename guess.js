@@ -9,20 +9,23 @@ guessApp.factory('GameService', function () {
             Score: function (successful, skipped, remaining, seconds) {
                 var score = (1680 - seconds - (remaining + skipped) * 60) / 1680 * 100;
                 return parseInt(score);
-            }
+            },
+            TotalSeconds: 8 * 60
         },
         {
             Name: 'Arcade Mode',
             Score: function (successful, skipped, remaining, seconds) {
                 var score = successful / 20 * 100;
                 return parseInt(score);
-            }
+            },
+            TotalSeconds: 4 * 60
         },
         {
             Name: 'One Piece Mode',
             Score: function (successful, skipped, remaining, seconds) {
                 return successful * 10;
-            }
+            },
+            TotalSeconds: 2 * 60
         }
     ];
 
@@ -135,6 +138,13 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
 
     $scope.seconds = 0;
 
+    $scope.extraSeconds = 0;
+
+    $scope.remainingSeconds = function () {
+        var remaingSeconds = $scope.currentMode.TotalSeconds + $scope.extraSeconds - $scope.seconds;
+        return remaingSeconds < 0 ? 0 : remaingSeconds;
+    };
+
     $scope.current = null;
 
     $scope.pending = WordService.getWords(category);
@@ -196,25 +206,29 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
     };
 
     $scope.IsCompleted = function () {
-        var result = $scope.pending.length == 0 && $scope.current == null;
-        if (result)
-            $scope.Stop();
+        var noMoreWords = $scope.pending.length == 0 && $scope.current == null;
+        var timeIsUp = $scope.remainingSeconds() <= 0;
 
-        return result;
+        if (!noMoreWords && !timeIsUp) {
+            return false;
+        }
+
+        $scope.Stop();
+        return true;
     };
 
     $scope.GetSeconds = function () {
-        var digit = $scope.seconds % 60;
+        var digit = $scope.remainingSeconds() % 60;
         return digit >= 10 ? digit.toString() : '0' + digit;
     };
 
     $scope.GetMinutes = function () {
-        var digit = Math.floor($scope.seconds / 60) % 60;
+        var digit = Math.floor($scope.remainingSeconds() / 60) % 60;
         return digit >= 10 ? digit.toString() : '0' + digit;
     };
 
     $scope.GetHours = function () {
-        var digit = Math.floor($scope.seconds / 3600);
+        var digit = Math.floor($scope.remainingSeconds() / 3600);
         return digit >= 10 ? digit.toString() : '0' + digit;
     };
 
