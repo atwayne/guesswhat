@@ -44,7 +44,7 @@ guessApp.factory('GameService', function () {
         }
     ];
 
-    var defaultMode = 'Normal Mode';
+    var defaultMode = 'One Piece Mode';
 
     var getModeNames = function () {
         return _.map(modes, function (item) { return item.Name; });
