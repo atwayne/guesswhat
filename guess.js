@@ -14,7 +14,8 @@ guessApp.factory('GameService', function () {
             KeepCategory: false,
             KeepWord: true,
             ExtraSecondPerSuccessGuess: 0,
-            ExtraSecondPerSkip: 0
+            ExtraSecondPerSkip: 0,
+            FirstAlert: 3 * 60,
         },
         {
             Name: 'Arcade Mode',
@@ -26,7 +27,8 @@ guessApp.factory('GameService', function () {
             KeepCategory: false,
             KeepWord: true,
             ExtraSecondPerSuccessGuess: 0,
-            ExtraSecondPerSkip: 0
+            ExtraSecondPerSkip: 0,
+            FirstAlert: 2 * 60
         },
         {
             Name: 'One Piece Mode',
@@ -37,7 +39,8 @@ guessApp.factory('GameService', function () {
             KeepCategory: true,
             KeepWord: false,
             ExtraSecondPerSuccessGuess: 15,
-            ExtraSecondPerSkip: -30
+            ExtraSecondPerSkip: -30,
+            FirstAlert: 40
         }
     ];
 
@@ -166,6 +169,30 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
         return remaingSeconds < 0 ? 0 : remaingSeconds;
     };
 
+    $scope.rgb = function () {
+        var red = 0;
+        var green = 0;
+        var blue = 0;
+
+        var remaingSeconds = $scope.remainingSeconds();
+        if (remaingSeconds >= $scope.currentMode.FirstAlert) {
+            // green to yellow
+            green = 255;
+            if (remaingSeconds > $scope.currentMode.TotalSeconds) {
+                red = 0;
+            } else {
+                var gapFromTotalSeconds = $scope.currentMode.TotalSeconds - remaingSeconds;
+                var percent = gapFromTotalSeconds / ($scope.currentMode.TotalSeconds - $scope.currentMode.FirstAlert);
+                red = parseInt(percent * 255);
+            }
+        } else {
+            red = 255;
+            var percent = remaingSeconds / $scope.currentMode.FirstAlert;
+            green = parseInt(percent * 255);
+        }
+
+        return "rgb(" + red + "," + green + "," + blue + ")";
+    };
     $scope.current = null;
 
     $scope.pending = WordService.getWords(category, $scope.currentMode.KeepCategory);

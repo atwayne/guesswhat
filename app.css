@@ -37,6 +37,17 @@ body {
     margin-bottom: 2em;
 }
 
+.timeup {
+    border-left: 1em solid;
+    border-left-color:yellow;
+}
+
+.critical {
+    border-left: 1em solid;
+    border-left-color:red;
+}
+
+
 .button-group {
     text-align: right;
 }
@@ -92,6 +103,7 @@ div.header span.title {
 div.header .glyphicon, div.button-group .glyphicon {
     font-size: 7em;
     cursor: pointer;
+    box-shadow: 10px 10px 10px 0px rgba(0,0,0,0.75);
 }
 
 div.button-group .glyphicon {
