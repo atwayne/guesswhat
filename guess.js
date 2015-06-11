@@ -10,7 +10,11 @@ guessApp.factory('GameService', function () {
                 var score = (1680 - seconds - (remaining + skipped) * 60) / 1680 * 100;
                 return parseInt(score);
             },
-            TotalSeconds: 8 * 60
+            TotalSeconds: 8 * 60,
+            KeepCategory: false,
+            KeepWord: true,
+            ExtraSecondPerSuccessGuess: 0,
+            ExtraSecondPerSkip:0
         },
         {
             Name: 'Arcade Mode',
@@ -18,14 +22,22 @@ guessApp.factory('GameService', function () {
                 var score = successful / 20 * 100;
                 return parseInt(score);
             },
-            TotalSeconds: 4 * 60
+            TotalSeconds: 4 * 60,
+            KeepCategory: false,
+            KeepWord: true,
+            ExtraSecondPerSuccessGuess: 0,
+            ExtraSecondPerSkip: 0
         },
         {
             Name: 'One Piece Mode',
             Score: function (successful, skipped, remaining, seconds) {
                 return successful * 10;
             },
-            TotalSeconds: 2 * 60
+            TotalSeconds: 90,
+            KeepCategory: true,
+            KeepWord: false,
+            ExtraSecondPerSuccessGuess: 15,
+            ExtraSecondPerSkip: -30
         }
     ];
 
@@ -89,20 +101,38 @@ guessApp.factory('WordService', function () {
         'Planet10': ['Earth', 'Mars']
     };
 
-    var completed = [];
+    var completedCategory = [];
 
     var getCategories = function () {
-        return _.keys(_.omit(wordList, completed));
+        return _.keys(_.omit(wordList, completedCategory));
     };
 
-    var getWords = function (category) {
-        completed.push(category);
+    var getWords = function (category, keepCategory) {
+        if (!keepCategory) {
+            markCategoyAsUsed(category);
+        }
         return wordList[category];
+    };
+
+    var markWordAsUsed = function (word, category) {
+        if (category && _.contains(wordList[category], word)) {
+            wordList[category] = _.without(wordList[category], word);
+        }
+        else {
+            wordList = _.map(wordList, function (array) {
+                return _.without(array, word);
+            });
+        }
+    };
+
+    var markCategoyAsUsed = function (category) {
+        completedCategory.push(category);
     };
 
     return {
         getCategories: getCategories,
-        getWords: getWords
+        getWords: getWords,
+        markWordAsUsed: markWordAsUsed
     };
 });
 
@@ -147,7 +177,7 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
 
     $scope.current = null;
 
-    $scope.pending = WordService.getWords(category);
+    $scope.pending = WordService.getWords(category, $scope.currentMode.KeepCategory);
 
     $scope.skipped = [];
 
@@ -166,14 +196,28 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
     };
 
     $scope.MoveNext = function () {
+        // remove it from pending
         $scope.pending = _.without($scope.pending, $scope.current);
+        // add it to completed
         $scope.completed.push($scope.current);
+        // if success, add extra seconds
+        $scope.extraSeconds += $scope.currentMode.ExtraSecondPerSuccessGuess;
+        // take it from word list if necessary
+        if (!$scope.currentMode.KeepWord) {
+            WordService.markWordAsUsed($scope.current, category);
+        }
         $scope.GetRandomWord();
     };
 
     $scope.Skip = function () {
         $scope.pending = _.without($scope.pending, $scope.current);
         $scope.skipped.push($scope.current);
+        // if success, add extra seconds
+        $scope.extraSeconds += $scope.currentMode.ExtraSecondPerSkip;
+        // take it from word list if necessary
+        if (!$scope.currentMode.KeepWord) {
+            WordService.markWordAsUsed($scope.current, category);
+        }
         $scope.GetRandomWord();
     };
 
