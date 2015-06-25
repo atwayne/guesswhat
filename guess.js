@@ -140,7 +140,7 @@ guessApp.factory('WordService', function ($http) {
         };
         $http.post(expireAPI, request);
         if (trash) {
-            var trashAPI = 'http:///guesswhat/word/trash';
+            var trashAPI = 'http:///guesswhat/word/block';
             $http.post(trashAPI, request);
         }
     };
