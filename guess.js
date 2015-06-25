@@ -183,6 +183,8 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
 
     $scope.seconds = 0;
 
+    $scope.secondsOflastGuess = 0;
+
     $scope.extraSeconds = 0;
 
     $scope.remainingSeconds = function () {
@@ -248,11 +250,20 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
         $scope.GetRandomWord();
     };
 
-    $scope.Skip = function () {
+    $scope.Skip = function (rollback) {
+        rollback = !!rollback;
+        if (rollback) {
+            // bad word candidate, rollback
+            $scope.seconds = $scope.secondsOflastGuess;
+        } else {
+            // skip
+            $scope.extraSeconds += $scope.currentMode.ExtraSecondPerSkip;
+        }
+
+
         $scope.pending = _.without($scope.pending, $scope.current);
         $scope.skipped.push($scope.current);
-        // if success, add extra seconds
-        $scope.extraSeconds += $scope.currentMode.ExtraSecondPerSkip;
+        
         // take it from word list if necessary
         if (!$scope.currentMode.KeepWord) {
             WordService.markWordAsUsed($scope.current, category);
@@ -261,6 +272,7 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
     };
 
     $scope.GetRandomWord = function () {
+        $scope.secondsOflastGuess = $scope.seconds;
         var random = _.random(0, $scope.pending.length - 1);
         var word = $scope.pending[random];
         $scope.current = word;
@@ -340,8 +352,7 @@ guessApp.config(['$routeProvider', function ($routeProvider) {
             controller: 'CategoryCtrl'
         })
         .when('/rules', {
-            templateUrl: 'rules.html',
-            controller: 'RulesCtrl'
+            templateUrl: 'rules.html'
         })
         .otherwise({ redirectTo: '/rules' });
 }]);
