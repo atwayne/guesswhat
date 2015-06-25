@@ -92,7 +92,7 @@ guessApp.factory('GameService', function () {
 
 guessApp.factory('WordService', function ($http) {
 
-    var host = "";
+    var host = "http:///guesswhat/word/list";
 
     var wordList = {};
 
@@ -122,7 +122,7 @@ guessApp.factory('WordService', function ($http) {
         return wordList[category];
     };
 
-    var markWordAsUsed = function (word, category) {
+    var markWordAsUsed = function (word, category, trash) {
         if (category && _.contains(wordList[category], word)) {
             wordList[category] = _.without(wordList[category], word);
         }
@@ -130,6 +130,18 @@ guessApp.factory('WordService', function ($http) {
             wordList = _.map(wordList, function (array) {
                 return _.without(array, word);
             });
+        }
+
+        trash = !!trash;
+        var expireAPI = 'http:///guesswhat/word/expire';
+        var request = {
+            'CreatedBy': 'Party',
+            'Words': [word]
+        };
+        $http.post(expireAPI, request);
+        if (trash) {
+            var trashAPI = 'http:///guesswhat/word/trash';
+            $http.post(trashAPI, request);
         }
     };
 
@@ -245,7 +257,7 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
         $scope.extraSeconds += $scope.currentMode.ExtraSecondPerSuccessGuess;
         // take it from word list if necessary
         if (!$scope.currentMode.KeepWord) {
-            WordService.markWordAsUsed($scope.current, category);
+            WordService.markWordAsUsed($scope.current, category, false);
         }
         $scope.GetRandomWord();
     };
@@ -263,10 +275,10 @@ guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordS
 
         $scope.pending = _.without($scope.pending, $scope.current);
         $scope.skipped.push($scope.current);
-        
+
         // take it from word list if necessary
         if (!$scope.currentMode.KeepWord) {
-            WordService.markWordAsUsed($scope.current, category);
+            WordService.markWordAsUsed($scope.current, category, rollback);
         }
         $scope.GetRandomWord();
     };
