@@ -31,7 +31,7 @@ guessApp.factory('GameService', function () {
             FirstAlert: 2 * 60
         },
         {
-            Name: 'One Piece Mode',
+            Name: 'Speed Mode',
             Score: function (successful, skipped, remaining, seconds) {
                 return successful * 10;
             },
@@ -44,7 +44,7 @@ guessApp.factory('GameService', function () {
         }
     ];
 
-    var defaultMode = 'One Piece Mode';
+    var defaultMode = 'Speed Mode';
 
     var getModeNames = function () {
         return _.map(modes, function (item) { return item.Name; });
@@ -90,9 +90,23 @@ guessApp.factory('GameService', function () {
     };
 });
 
-guessApp.factory('WordService', function () {
-    var wordList = {
-        'One Piece': ['JavaScript', 'Java', 'C#', 'Powershell', 'Python', 'SQL', 'HTML', 'CSS', 'C', 'C++', 'Basic', 'LISP', 'Go']
+guessApp.factory('WordService', function ($http) {
+
+    var host = "";
+
+    var wordList = {};
+
+    var prepareWord = function (callback) {
+        if (_.isEmpty(wordList)) {
+            $http.get(host)
+            .then(function (response) {
+                var words = _.map(response.data, function (item) { return item.Text; });
+                wordList['Default'] = words;
+                if (_.isFunction(callback)) {
+                    callback();
+                }
+            });
+        }
     };
 
     var completedCategory = [];
@@ -124,6 +138,7 @@ guessApp.factory('WordService', function () {
     };
 
     return {
+        prepareWord: prepareWord,
         getCategories: getCategories,
         getWords: getWords,
         markWordAsUsed: markWordAsUsed
@@ -153,6 +168,12 @@ guessApp.controller('CategoryCtrl', function ($scope, $window, WordService, Game
     $scope.goto = function (category) {
         $window.location.href = "#/word/" + category;
     };
+
+    if (_.isEmpty($scope.categories)) {
+        WordService.prepareWord(function () {
+            $scope.categories = WordService.getCategories();
+        });
+    }
 });
 
 guessApp.controller('MainCtrl', function ($scope, $interval, $routeParams, WordService, GameService) {
